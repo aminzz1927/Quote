@@ -5,7 +5,9 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,7 +43,7 @@ import com.quo.utils.ResultCode;
 * @author zhoumin
 
 */
-@Controller("authorityController")
+@RestController("authorityController")
 @RequestMapping(value="/api")            
 public class AuthorityController {
 	@Autowired
@@ -49,8 +51,7 @@ public class AuthorityController {
 	
 
 	//获取某个角色的所有权限
-	@RequestMapping(value="/authority/{rid}",method=RequestMethod.GET)
-	@ResponseBody
+	@GetMapping("/authority/{rid}")
 	public Result getRoleAuthority(@PathVariable Integer rid){
 		
 		  List<Integer> authority = authorityService.findListByRoleId(rid);
@@ -64,8 +65,7 @@ public class AuthorityController {
 		
 
 	//更新权限
-		@RequestMapping(value="/authority/{rid}",method=RequestMethod.PUT)
-		@ResponseBody
+		@PutMapping("/authority/{rid}")
 		public Result updateAuthority(@PathVariable Integer rid,
 									  @RequestBody Integer[] mids){
 			

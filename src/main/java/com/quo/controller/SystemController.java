@@ -10,10 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.quo.dto.EmpDto;
 import com.quo.dto.MenuDto;
@@ -31,7 +34,7 @@ import com.quo.utils.ResultCode;
 * @author zhoumin
 
 */
-@Controller("systemController")
+@RestController("systemController")
 @RequestMapping(value="/api")
 public class SystemController {
 	
@@ -45,8 +48,7 @@ public class SystemController {
 	public EmpService eService;
 	
 	  //获取审核金额和有效期限
-	  @RequestMapping(value="/system-setting",method=RequestMethod.GET)
-	  @ResponseBody 
+	  @GetMapping("/system-setting") 
 	  public Result getSystemSettings(){ 
 		  
 		  SystemSettings systemSettings = systemService.getSystemSettings(); 
@@ -58,8 +60,7 @@ public class SystemController {
 	  }
 	 
 	  //修改审核金额和有效期限
-	  @RequestMapping(value="/system-setting",method=RequestMethod.PUT)
-	  @ResponseBody 
+	  @PutMapping("/system-setting")
 	  public Result updateSystemSettings(@RequestBody SystemSettings systemSettings){ 
 		  
 		  systemService.updateSystemSettings(systemSettings);    
@@ -69,10 +70,8 @@ public class SystemController {
 	  }
 	  
 	  //获取用户登录信息和权限
-	  @RequestMapping(value="/menu",method=RequestMethod.GET)
-	  @ResponseBody 
+	  @GetMapping("/menu")
 	  public Result getMenu(HttpServletRequest request,MenuDto menuDto){ 
-		  
 		  Cookie[] cookies = request.getCookies();	
 		  Integer eno = 0;
 		  String pwd = null;
@@ -87,7 +86,6 @@ public class SystemController {
 		    	pwd = cookie.getValue();		    		    	
 		    }			  	          
 		  }	  		
-		  
 		  Emp emp = systemService.ifExists(eno,pwd);	  
 		  EmpDto emp2 = systemService.getEmpDtoByEno(emp.getEno());
 		  List<Integer> mids = authorityService.findListByRoleId(emp.getRid());

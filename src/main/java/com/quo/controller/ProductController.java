@@ -36,12 +36,17 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -68,7 +73,7 @@ import com.quo.utils.ResultCode;
  * 
 
 */
-@Controller("productController")
+@RestController("productController")
 @RequestMapping(value="/api")
 public class ProductController {
 
@@ -81,8 +86,7 @@ public class ProductController {
 	
 	     //获取所有产品信息		
 			  //@Permission(name = "product:view")
-			  @RequestMapping(value="/product",method=RequestMethod.GET)
-			  @ResponseBody 
+			  @GetMapping("/product") 
 			  public Result getProductList(){ 
 				  
 				  List<ProductsDto> plist =	pService.getProductList(); 
@@ -94,8 +98,7 @@ public class ProductController {
 			  }
 		  
 		  //获取单个产品信息
-		  @RequestMapping(value="/product/{pid}",method=RequestMethod.GET)		  
-		  @ResponseBody 
+		  @GetMapping("/product/{pid}")		  
 		  public Result getProduct(@PathVariable Long pid){ 
 			  ProductDto product = pService.getProduct(pid);
 			  Result result=new Result(ResultCode.SUCCESS);
@@ -106,8 +109,7 @@ public class ProductController {
 		  
 		  //更新特定产品信息
 		 // @Permission(name = "product:edit")
-		  @RequestMapping(value="/product/{pid}",method=RequestMethod.PUT)
-		  @ResponseBody
+		  @PutMapping("/product/{pid}")
 		  public Result updateProduct(@PathVariable(value="pid") Long pid,@RequestBody Product product){ 
 			  product.setPid(pid);		
 			  pService.updateProduct(product);					
@@ -117,8 +119,7 @@ public class ProductController {
 		  
 		  //获取产品类型列表(产品编辑)
 		
-		  @RequestMapping(value="/product-type-list-edit",method=RequestMethod.GET)		  
-		  @ResponseBody 
+		  @GetMapping("/product-type-list-edit")		  
 		  public Result getTypeList(){ 
 			  List<ProductType> typeList = pService.getTypeList();
 			  Result result=new Result(ResultCode.SUCCESS);
@@ -128,8 +129,7 @@ public class ProductController {
 		  }		
 		  
 		  //获取产品类型列表(添加新品)
-		  @RequestMapping(value="/product-type-list-add",method=RequestMethod.GET)		  
-		  @ResponseBody 
+		  @GetMapping("/product-type-list-add")		  
 		  public Result getTypeListForNew(){ 
 			  List<ProductType> typeList = pService.getTypeList();
 			  Result result=new Result(ResultCode.SUCCESS);
@@ -139,8 +139,7 @@ public class ProductController {
 		  }	
 		  
 		//获取产品类型列表(シリーズ編集)
-		  @RequestMapping(value="/product-type-list-series-edit",method=RequestMethod.GET)		  
-		  @ResponseBody 
+		  @GetMapping("/product-type-list-series-edit")		  
 		  public Result getTypeListForSeries(){ 
 			  List<ProductType> typeList = pService.getTypeList();
 			  Result result=new Result(ResultCode.SUCCESS);
@@ -150,8 +149,7 @@ public class ProductController {
 		  }	
 		  
 		//获取产品类型列表(新規シリーズ)
-		  @RequestMapping(value="/product-type-list-series-add",method=RequestMethod.GET)		  
-		  @ResponseBody 
+		  @GetMapping("/product-type-list-series-add")		  
 		  public Result getTypeListForNewSeries(){ 
 			  List<ProductType> typeList = pService.getTypeList();
 			  Result result=new Result(ResultCode.SUCCESS);
@@ -162,8 +160,7 @@ public class ProductController {
 		  	  
 		  
 		  //获取产品系列列表(产品编辑)
-		  @RequestMapping(value="/product-series-list-edit",method=RequestMethod.GET)		  
-		  @ResponseBody 
+		  @GetMapping("/product-series-list-edit")		   
 		  public Result getSeriesListForEdit(){ 
 			  List<ProductSeries2> seriesList = pService.getSeriesList();
 			  System.out.println("AAAAAAAAAA"+seriesList);
@@ -174,8 +171,7 @@ public class ProductController {
 		  }
 		  
 		  //获取产品系列列表(添加新品)
-		  @RequestMapping(value="/product-series-list-add",method=RequestMethod.GET)		  
-		  @ResponseBody 
+		  @GetMapping("/product-series-list-add")		  
 		  public Result getSeriesListForNew(){ 
 			  List<ProductSeries2> seriesList = pService.getSeriesList();
 			  Result result=new Result(ResultCode.SUCCESS);
@@ -196,8 +192,7 @@ public class ProductController {
 				  }
 				  */
 		  //@Permission(name = "product:delete")
-		  @RequestMapping(value="/product/{pid}",method=RequestMethod.DELETE)
-		  @ResponseBody
+		  @DeleteMapping("/product/{pid}")
 		  public Result deleteProduct(@PathVariable(value="pid") Long pid){ 
 			  
 			  Long[] pids =	qService.getPidsByQuote();
@@ -210,8 +205,7 @@ public class ProductController {
 		  }
 		  
 		  //删除多个产品
-		  @RequestMapping(value="/product-del",method=RequestMethod.POST)		  
-		  @ResponseBody 
+		  @PostMapping("/product-del")		  
 		  public Result deleteProducts(@RequestBody Long[] pids){ 
 			  
 			  Long[] pidsOfQuote =	qService.getPidsByQuote();
@@ -230,11 +224,17 @@ public class ProductController {
 
 		  //添加单个产品
 		 // @Permission(name = "product:add")
-		  @RequestMapping(value="/product",method=RequestMethod.POST)
-		  @ResponseBody
+		  @PostMapping("/product")
 		  public Result addProduct(@RequestBody Product product){ 
-
-			  	pService.addProduct(product);
+			  System.out.println("111111111");
+			  	try {
+			  		pService.addProduct(product);
+			  	}catch (Exception e){
+			  		e.printStackTrace();
+		            return new Result(ResultCode.SERVER_ERROR);
+			  	}
+			  	
+			  	System.out.println("2222222222");
 			
 				return new Result(ResultCode.SUCCESS);						  
 		  

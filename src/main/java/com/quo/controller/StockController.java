@@ -9,11 +9,14 @@ import javax.servlet.http.HttpSession;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.quo.dto.ProductsDto;
 import com.quo.dto.StockInfoDto;
@@ -30,7 +33,7 @@ import com.quo.utils.ResultCode;
 * @author zhoumin
 
 */
-@Controller("stockController")
+@RestController("stockController")
 @RequestMapping(value="/api")
 public class StockController {
 	
@@ -42,8 +45,7 @@ public class StockController {
 	
 	
 	  //在库一览					
-	  @RequestMapping(value="/stock-list",method=RequestMethod.GET)
-	  @ResponseBody 
+	  @GetMapping("/stock-list")
 	  public Result getStockList(){ 
 		  
 		  List<ProductsDto> stockList =	pService.getProductList(); 
@@ -56,8 +58,7 @@ public class StockController {
 	  
 	  
 	  //出入库详情					
-	  @RequestMapping(value="/stock-detail-list",method=RequestMethod.GET)
-	  @ResponseBody 
+	  @GetMapping("/stock-detail-list")
 	  public Result getStockInfoList(){ 
 		  
 		  List<StockInfoDto> stockInfoList = stockService.getStockInfoList(); 
@@ -70,8 +71,7 @@ public class StockController {
 	  
 	  
 	  //更新入库后的库存数量及出入库记录
-	  @RequestMapping(value="/stock-in/{pid}",method=RequestMethod.POST)
-	  @ResponseBody 
+	  @PostMapping("/stock-in/{pid}")
 	  public Result updateStockInInfo(@PathVariable(value="pid") Long pid,@RequestBody Integer quantity,HttpSession session){ 
 		  System.out.println("pid"+pid+"quantity"+quantity);
 
@@ -100,8 +100,7 @@ public class StockController {
 	  
 	  
 	  //更新出库后的库存数量及出入库记录
-	  @RequestMapping(value="/stock-out/{pid}",method=RequestMethod.POST)
-	  @ResponseBody 
+	  @PostMapping("/stock-out/{pid}")
 	  public Result updateStockOutInfo(@PathVariable(value="pid") Long pid,@RequestBody Integer quantity,HttpSession session){ 
 		  System.out.println("pid"+pid+"quantity"+quantity);
 
