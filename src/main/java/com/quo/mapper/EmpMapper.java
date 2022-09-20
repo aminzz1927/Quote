@@ -33,7 +33,7 @@ public interface EmpMapper {
 	 * @author zhoumin
 	 *
 	 */
-	@Select("select * from emp where eno = #{arg0} and pwd = #{arg1}")
-	Emp getEmp(int eno, String pwd);
+	@Select("select * from emp where eno = #{eno} and pwd = #{pwd}")
+	Emp getEmp(@Param("eno")int eno, @Param("pwd")String pwd);
 	
 }

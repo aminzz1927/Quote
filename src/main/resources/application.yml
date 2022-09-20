@@ -7,3 +7,5 @@ spring:
 
 mybatis.mapper-locations: classpath:mapper/*.xml
 mybatis.type-aliases-package: com.quo.entity
+
+
