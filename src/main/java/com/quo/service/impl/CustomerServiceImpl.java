@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.quo.entity.Customer;
 import com.quo.entity.Customer2;
+import com.quo.entity.Customer3;
 import com.quo.entity.Dept;
+import com.quo.entity.Emp;
+import com.quo.entity.EmpRole;
 import com.quo.entity.ProductSeries2;
 import com.quo.mapper.CustomerMapper;
 import com.quo.mapper.DeptMapper;
@@ -45,5 +48,19 @@ public class CustomerServiceImpl implements CustomerService {
 	public Customer getByCid(int cid) {
 		return 	cmapper.getByCid(cid);
 	}
+
+	@Override
+	public EmpRole getRidByEno(int eno) {
+		// TODO Auto-generated method stub
+		return cmapper.getRidByEno(eno);
+	}
+
+	@Override
+	public Customer3 getCustomerByEno(int eno) {
+		
+		return cmapper.getCustomerByEno(eno);
+	}
+
+	
 
 }

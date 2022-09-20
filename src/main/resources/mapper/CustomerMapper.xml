@@ -7,13 +7,20 @@
 
 	
 	<select id="getAll" resultType="customer2">
-		select c.cid,c.cname, c.ctype ,c.contact,e.ename ,c.csource,c.ftime   from customer c left join emp e on e.eno=c.salesno order by cid desc
+		select c.cid,c.cname, c.ctype ,c.contact,e.ename ,c.csource,to_char(ftime, 'YYYY.MM.DD' )   from customer c left join emp e on e.eno=c.salesno order by cid desc
 	</select>
 	
 	<select id="getByCid" resultType="customer">
-		select c.cid,c.cname, c.ctype,c.address,c.email,c.zip ,c.tel ,c.fax ,c.contact,e.ename ,c.csource,c.ftime   from customer c left join emp e on e.eno=c.salesno  where cid = #{cid} order by cid desc
+		select c.cid,c.cname, c.ctype,c.address,c.email,c.zip ,c.tel ,c.fax ,c.contact,e.ename ,c.csource,to_char(ftime, 'YYYY.MM.DD' )   from customer c left join emp e on e.eno=c.salesno  where cid = #{cid} order by cid desc
 	</select>
 	
+	<select id="getRidByEno" resultType="empRole">
+	select e.rid from emp e left join role r on e.eno=r.rid where e.eno=#{eno}
+	</select>
+	
+	<select id="getCustomerByEno" resultType="customer3">
+   select c.cid,c.cname, c.ctype,c.address,c.email,c.zip ,c.tel ,c.fax ,c.contact,e.ename ,c.csource,to_char(ftime, 'YYYY.MM.DD' ) from CUSTOMER c left join emp e on e.eno=c.salesno where e.eno=#{eno}
+	</select>
 </mapper>
 
 

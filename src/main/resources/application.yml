@@ -4,6 +4,16 @@ spring:
     url: jdbc:oracle:thin:@82.157.249.88:1521/xe
     username: tofu15
     password: LxUaqVk5bNobMGLyDwnY
-
+    type: com.alibaba.druid.pool.DruidDataSource
+  web:
+    resources:
+     chain:
+      cache: false
+ 
 mybatis.mapper-locations: classpath:mapper/*.xml
 mybatis.type-aliases-package: com.quo.entity
+logging:
+  level:
+   root: debug
+server:
+  port: 28080
