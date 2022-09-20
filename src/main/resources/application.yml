@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@82.157.249.88:1521/xe
+    username: tofu15
+    password: LxUaqVk5bNobMGLyDwnY
+
+mybatis.mapper-locations: classpath:mapper/*.xml
+mybatis.type-aliases-package: com.quo.entity

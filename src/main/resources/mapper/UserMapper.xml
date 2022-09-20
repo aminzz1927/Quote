@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.quo.mapper.UserMapper">
+<insert id="save" parameterType="empDto">
+		insert into emp
+			(ename,rid,tel,email)
+		values
+			(#{ename},#{rid},#{tel},#{email})
+	</insert>
+	
+	<update id="update" parameterType="empDto">
+		update emp set ename = #{ename},rid = #{rid},tel = #{tel},email = #{email} where eno = #{eno}
+	</update>
+	
+	<delete id="deleteByEno" parameterType="int">
+		delete  from emp where eno = #{eno}
+	</delete>
+	
+	<delete id="deleteByEnos">
+		delete from emp where eno in
+		<foreach collection="array" separator="," item="eno" open="(" close=")">
+		#{eno}
+		</foreach>
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

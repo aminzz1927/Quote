@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 命名空间 -->
+<mapper namespace="com.quo.mapper.ProductMapper">
+<resultMap id="product" type="Product">
+        <id property="pid" column="pid" javaType="Long"/>
+        <result property="pname" column="pname" javaType="String"/>
+        <result property="psid" column="psid" javaType="int"/>
+        <result property="stock" column="stock" javaType="int"/>
+        <result property="connection" column="connection" javaType="String"/>
+        <result property="pInterface" column="pInterface" javaType="String"/>
+        <result property="noise" column="noise" javaType="String"/>
+        <result property="bass" column="bass" javaType="String"/>
+        <result property="waterproof" column="waterproof" javaType="String"/>
+        <result property="price" column="price" javaType="double"/>
+        <result property="mic" column="mic" javaType="String"/>
+        <result property="packageInfo" column="packageInfo" javaType="String"/>
+        <association property="productSeries" column="psid" javaType="ProductSeries" >
+            <id property="psid" column="psid" javaType="int"/>
+            <result property="psname" column="psname" javaType="String"/>
+        </association>
+         <association property="productType" column="tid" javaType="ProductType" >
+            <id property="tid" column="tid" javaType="int"/>
+            <result property="tname" column="tname" javaType="String"/>
+        </association>
+    </resultMap>	
+	
+ <!-- 	<select id="getProductList" resultType="productsDto">
+	select p.pid,p.pname,pt.tname,ps.psname,p.price,p.stock from product p left join productseries ps 
+	on p.psid=ps.psid left join producttype pt on ps.tid=pt.tid order by pid asc
+	
+	</select> 
+ -->
+<!-- 	<select id="getProduct" parameterType="Integer" resultType="product">
+	select * from product where pid=#{pid}
+	
+	</select> -->
+	
+	<update id="updateProduct" parameterType="product">
+	update product set pname=#{pname},psid=#{psid},connection=#{connection},
+	pinterface=#{pinterface},noise=#{noise},bass=#{bass},waterproof=#{waterproof},price=#{price},
+	packageInfo=#{packageInfo} where pid=#{pid}
+	
+	</update>
+	
+	<select id="getTypeList" resultType="productType">
+	select * from producttype 
+	
+	</select>
+	
+	<select id="getSeriesList" resultType="productSeries2">
+	select * from productseries 
+	
+	</select>
+	
+	<delete id="deleteProduct" parameterType="Long">
+		delete from product where pid = #{pid}
+	</delete>
+	
+	<delete id="deleteProducts" parameterType="Long">
+		delete from product where pid in
+		<foreach collection="array" item="pid" index="index" open="(" separator="," close=")">
+			#{pid}
+		
+		</foreach>
+	</delete>
+	
+	<insert id="addProduct" parameterType="product">
+		insert into product(pname,psid,connection,pinterface,noise,
+		bass,waterproof,mic,price,packageInfo) values(#{pname},#{psid},#{connection},#{pinterface},#{noise},
+		#{bass},#{waterproof},#{mic},#{price},#{packageInfo}) 
+	
+	</insert>
+	
+	 <!-- author:韩宛廷，添加多个产品 -->
+	<!-- <insert id="saves" parameterType="product"> -->
+	<insert id="saves"  parameterType="productReport">
+		insert into product 
+			(pname,psid,price,connection,pinterface,noise,
+		bass,waterproof,mic,packageInfo)
+       
+			<foreach collection="list" item="a" separator="union">
+			select #{a.pname},#{a.psid},#{a.price},#{a.connection},#{a.pinterface},#{a.noise},
+		#{a.bass},#{a.waterproof},#{a.mic},#{a.packageInfo} from dual  
+			</foreach>
+	</insert>
+
+      <!-- author:韩宛廷，产品导出 -->
+      <select id="getByPids" resultType="productExport">
+           select p.pid,p.pname,pt.tname,ps.psname,p.price,p.stock,p.connection,p.pInterface,p.noise,p.bass,
+	  		p.waterproof,p.mic,p.packageInfo from product p left join productseries ps on p.psid=ps.psid 
+	  		left join producttype pt on ps.tid=pt.tid where pid in 
+		<foreach collection="array" item="pid" separator="," open="(" close=")">
+		#{pid}
+		</foreach>
+	</select>
+</mapper>
